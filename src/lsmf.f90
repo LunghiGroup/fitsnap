@@ -74,8 +74,7 @@
           close(222)
 
          endif
-
-         
+        
          allocate(lmp(sys%ndata))
 
          do i=1,sys%ndata
@@ -87,7 +86,7 @@
            call lammps_file (lmp(i),sys%inp_fix)
            call lammps_command (lmp(i), &
                   'compute sna_e all sna/atom '//trim(snap_string)//&
-                  ' diagonal 3 rmin0 0 switchflag 1')
+                  ' rmin0 0 switchflag 1')
            call lammps_command (lmp(i),&
                 'compute type all property/atom type')
            call lammps_command (lmp(i),&
@@ -97,7 +96,7 @@
            if(fit_forces)then
             call lammps_command (lmp(i), &
                   'compute sna_f all snad/atom '//trim(snap_string)//&
-                  ' diagonal 3 rmin0 0 switchflag 1')
+                  ' rmin0 0 switchflag 1')
             call lammps_command (lmp(i), &
                   'compute f_x all property/atom fx')
             call lammps_command (lmp(i), &
@@ -523,7 +522,6 @@
         write(333,*) 'quadraticflag ',quadflag
         write(333,*) 'rfac0 1.00000'
         write(333,*) 'rmin0 0'
-        write(333,*) 'diagonalstyle 3'
         write(333,*) 'switchflag 1'
 
         close(333)
