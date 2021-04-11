@@ -60,7 +60,7 @@
 
          call lammps_command (lmp(1), &
                   'compute sna_e all sna/atom '//trim(snap_string)//&
-                  ' diagonal 3 rmin0 0 switchflag 1')
+                  ' rmin0 0 switchflag 1')
          call lammps_command (lmp(1),&
                 'compute type all property/atom type')
          call lammps_command (lmp(1),&
