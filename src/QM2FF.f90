@@ -29,6 +29,10 @@
 
           call getarg(l,command)
 
+          if(trim(command).eq.'-debug')then        
+           call getarg(l+1,command)
+           debug=.true.
+          endif
           if(trim(command).eq.'-datas')then        
            call getarg(l+1,command)
            read(command,*) datas

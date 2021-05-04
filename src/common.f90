@@ -10,6 +10,7 @@
          logical                        :: skip_fit=.false.,print_bi=.false.,refine=.false.,metrix=.true.
          double precision               :: cm_val=1.0d0,refine_temp,thr_kernel=0.5d0
          integer                        :: refine_maxiter,iter,tens_order,e0cs=0
+         logical                        :: debug=.false.
                                                 
         end module common_var
 

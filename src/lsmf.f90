@@ -79,7 +79,11 @@
 
          do i=1,sys%ndata
            
+          if(debug)then
+           call lammps_open_no_mpi ('lmp -screen none', lmp(i))
+          else
            call lammps_open_no_mpi ('lmp -log none -screen none', lmp(i))
+          endif
            call lammps_file (lmp(i),sys%inp)
            call lammps_command (lmp(i),'read_data '//trim(sys%data(i)%inp_data))
            call lammps_command (lmp(i),'group fitsnap type '//trim(snap_string2))
