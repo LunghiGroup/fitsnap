@@ -19,7 +19,8 @@
         character (len=2),allocatable   :: label(:)
         integer                         :: nkinds,bi_order,npar,npar2fit,tot_frames
         integer                         :: nats2fit,quadflag
-        double precision                :: gen_cutoff,pi
+        double precision                :: gen_cutoff,pi,cell(3,3)
+        real(C_double), pointer         :: aaa => null()
 
         real (C_double), pointer        :: id_dbl(:)=> null()
         real (c_double), pointer        :: kind_nat(:) => null()
@@ -97,7 +98,7 @@
                 ' dist gaussian')
          call lammps_command (lmp(1),'velocity all zero linear')
          call lammps_command (lmp(1),'velocity all zero angular')
-         
+
 
          call lammps_command (lmp(1),'group atom1 id 1')
          call lammps_command (lmp(1),'group atom2 id 4')
@@ -105,10 +106,18 @@
          call meta1%gauss%init()
 !         call meta2%gauss%init()
 
+        if(md_npt)then
          call lammps_command (lmp(1), &
-                'fix 1 all nvt temp $t $t 100.0 tchain 3')
+                'fix 1 all npt temp $t $t 100.0 tchain 3 x 0.00 0.00 1000.0 '//&
+                'y 0.00 0.00 1000.0 z 0.00 0.00 1000.0 xy 0.00 0.00 1000.0 '//&
+                'yz 0.00 0.00 1000.0 xz 0.00 0.00 1000.0 pchain 5')
+        else
+          call lammps_command (lmp(1), &
+                 'fix 1 all nvt temp $t $t 100.0 tchain 3')
+        endif
 
          open(13,file='new_geo.xyz',access='append')
+         open(17,file='new_geo.cell',access='append')
          open(14,file='kernel_max.dat',access='append')
          open(15,file='new_geo.ener',access='append')         
          open(16,file='meta.dat',access='append')
@@ -288,6 +297,28 @@
           if(any(max_kernel.lt.thr_kernel))then
            if(allocated(r)) deallocate(r)
            call lammps_gather_atoms (lmp(1),'x', 3, r)
+           cell=0.0d0
+           call lammps_extract_global (aaa, lmp(1), 'boxxhi')
+           cell(1,1)=aaa
+           call lammps_extract_global (aaa, lmp(1), 'boxxlo')
+           cell(1,1)=cell(1,1)-aaa
+           call lammps_extract_global (aaa, lmp(1), 'boxyhi')
+           cell(2,2)=aaa
+           call lammps_extract_global (aaa, lmp(1), 'boxylo')
+           cell(2,2)=cell(2,2)-aaa
+           call lammps_extract_global (aaa, lmp(1), 'boxzhi')
+           cell(3,3)=aaa
+           call lammps_extract_global (aaa, lmp(1), 'boxzlo')
+           cell(3,3)=cell(3,3)-aaa
+           call lammps_extract_global (aaa, lmp(1), 'xy')
+           cell(2,1)=aaa
+           call lammps_extract_global (aaa, lmp(1), 'yz')
+           cell(3,2)=aaa
+           call lammps_extract_global (aaa, lmp(1), 'xz')
+           cell(3,1)=aaa
+           cell(1,2)=0.0d0
+           cell(1,3)=0.0d0
+           cell(2,3)=0.0d0
            write(13,*) sys%data(1)%nats
            write(13,*)
            l=1
@@ -295,6 +326,8 @@
             write(13,*) sys%data(1)%label(j),r(l),r(l+1),r(l+2)
             l=l+3
            enddo
+           write(17,*) cell(1,:),cell(2,:),cell(3,:)
+           flush(17)
            flush(13)
            call lammps_close (lmp(1))
            deallocate(lmp)
@@ -305,6 +338,7 @@
            write(15,*) dft_ener,ff_ener
            flush(15)
            close(13)
+           close(17)
            close(14)
            close(15)
            return
@@ -320,6 +354,7 @@
          close(13)
          close(14)
          close(15)
+         close(17)
 
         return   
         end subroutine refine_snap

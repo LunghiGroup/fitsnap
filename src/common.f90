@@ -6,7 +6,7 @@
          type (C_ptr), allocatable      :: lmp(:)
          type(kernel_global)            :: kernel
          logical                        :: fit_forces=.false.,pca=.false.,cs=.false.,fit_ener=.false.
-         logical                        :: fit_tensors=.true.
+         logical                        :: fit_tensors=.true.,md_npt=.false.
          logical                        :: skip_fit=.false.,print_bi=.false.,refine=.false.,metrix=.true.
          double precision               :: cm_val=1.0d0,refine_temp,thr_kernel=0.5d0
          integer                        :: refine_maxiter,iter,tens_order,e0cs=0

@@ -21,7 +21,7 @@
                                         analysys.'
           write(*,*) '-print_bi       : print bispectrum components'
           write(*,*) '-out'
-          write(*,*) '-refine <iter> <temp> <thr>'
+          write(*,*) '-refine <iter> <temp> <thr> <npt>'
          stop
          endif   
 
@@ -72,6 +72,8 @@
            read(command,*) refine_temp
            call getarg(l+3,command)
            read(command,*) thr_kernel
+           call getarg(l+4,command)
+           if(trim(command).eq.'npt') md_npt=.true.
           endif
           if(trim(command).eq.'-compress')then        
            cs=.true.
