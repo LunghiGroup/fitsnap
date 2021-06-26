@@ -1,5 +1,6 @@
 reg-tests/
 *.o
+*.x
 *.mod
 *.f90_*
 *.f90.*
