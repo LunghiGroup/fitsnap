@@ -41,6 +41,10 @@
            call getarg(l+1,command)
            read(command,*) sys%inp
           endif
+          if(trim(command).eq.'-md_inp')then        
+           call getarg(l+1,command)
+           read(command,*) sys%md_inp
+          endif
           if(trim(command).eq.'-pot_fit')then        
            call getarg(l+1,command)
            read(command,*) sys%inp_fit

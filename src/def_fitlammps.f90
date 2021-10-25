@@ -21,6 +21,7 @@
          type(data_file), allocatable   :: data(:)
          integer                        :: ndata
          character (len=100)            :: inp
+         character (len=100)            :: md_inp
          character (len=100)            :: inp_fix
          character (len=100)            :: inp_fit
          integer                        :: tot_frames

@@ -99,14 +99,15 @@
          call lammps_command (lmp(1),'velocity all zero angular')
          
 
-         call lammps_command (lmp(1),'group atom1 id 1')
-         call lammps_command (lmp(1),'group atom2 id 4')
+!         call lammps_command (lmp(1),'group atom1 id 1')
+!         call lammps_command (lmp(1),'group atom2 id 4')
 !         call lammps_command (lmp(1),'group atom3 id 7')
-         call meta1%gauss%init()
+!         call meta1%gauss%init()
 !         call meta2%gauss%init()
 
-         call lammps_command (lmp(1), &
-                'fix 1 all nvt temp $t $t 100.0 tchain 3')
+!         call lammps_command (lmp(1), &
+!                'fix 1 all nvt temp $t $t 100.0 tchain 3')
+         call lammps_file (lmp(1),sys%md_inp)
 
          open(13,file='new_geo.xyz',access='append')
          open(14,file='kernel_max.dat',access='append')
