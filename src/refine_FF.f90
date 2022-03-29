@@ -299,18 +299,23 @@
            flush(13)
            call lammps_close (lmp(1))
            deallocate(lmp)
-           call execute_command_line('./run_DFT_scf.x')
-           open(16,file='last_dft_ener.dat')
-           read(16,*) dft_ener
-           close(16)
-           write(15,*) dft_ener,ff_ener
-           flush(15)
            close(13)
            close(14)
            close(15)
+           refine=.false.
            return
-           write(*,*) 'PUPPA'
-           flush(6)
+!           call execute_command_line('./run_DFT_scf.x')
+!           open(16,file='last_dft_ener.dat')
+!           read(16,*) dft_ener
+!           close(16)
+!           write(15,*) dft_ener,ff_ener
+!           flush(15)
+!           close(13)
+!           close(14)
+!           close(15)
+!           return
+!           write(*,*) 'PUPPA'
+!           flush(6)
           endif 
 
          enddo

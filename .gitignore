@@ -1,4 +1,5 @@
 reg-tests/
+*.sh
 *.o
 *.mod
 *.f90_*
